@@ -1,0 +1,54 @@
+/* General styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
+}
+
+/* Center the current rating selection */
+.rating-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.rating-selection select {
+  width: 100%;
+  max-width: 250px;
+}
+
+/* Button styles */
+.calculate-button {
+  background-color: #1a73e8;
+  transition: background-color 0.3s;
+}
+
+.calculate-button:hover {
+  background-color: #1557b0;
+}
+
+/* Example players buttons */
+.example-button {
+  transition: all 0.2s;
+}
+
+.example-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Stars display */
+.stars-display {
+  margin: 1.5rem 0;
+}
+
+/* Statistics display */
+.stats-display {
+  border-radius: 8px;
+}
+
+/* Analysis section */
+.analysis-section {
+  border-radius: 8px;
+}
