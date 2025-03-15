@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
-
 const PlayerRatingCalculator = () => {
-  const [stats, setStats] = useState({
+  const [stats, setStats] = React.usestate({
     playerName: '',
     position: 'PG',
     gamesPlayed: '',
@@ -15,10 +13,10 @@ const PlayerRatingCalculator = () => {
     currentRating: null
   });
   
-  const [rating, setRating] = useState(null);
-  const [positionDescription, setPositionDescription] = useState('');
-  const [ratingDescription, setRatingDescription] = useState('');
-  const [perGameStats, setPerGameStats] = useState(null);
+  const [rating, setRating] = React.usestate(null);
+  const [positionDescription, setPositionDescription] = React.usestate('');
+  const [ratingDescription, setRatingDescription] = React.usestate('');
+  const [perGameStats, setPerGameStats] = React.usestate(null);
   
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -796,4 +794,4 @@ const PlayerRatingCalculator = () => {
   );
 };
 
-export default PlayerRatingCalculator;
+window.PlayerRatingCalculator = PlayerRatingCalculator;
