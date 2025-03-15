@@ -1,54 +1,64 @@
-/* General styles */
+/* Miami-themed styles.css */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f0f2f5;
-  color: #333;
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(135deg, #0ff0fc, #fc00ff);
+  color: #ffffff;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
 }
 
-/* Center the current rating selection */
-.rating-selection {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 1rem;
+.max-w-3xl {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-.rating-selection select {
-  width: 100%;
-  max-width: 250px;
+h1 {
+  color: #00f5ff;
+  text-shadow: 0 0 8px #00f5ff;
 }
 
-/* Button styles */
-.calculate-button {
-  background-color: #1a73e8;
-  transition: background-color 0.3s;
+.text-gray-600 {
+  color: #ff00e1 !important;
 }
 
-.calculate-button:hover {
-  background-color: #1557b0;
+label {
+  color: #00f5ff;
 }
 
-/* Example players buttons */
-.example-button {
-  transition: all 0.2s;
+input, select {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border: 2px solid #00f5ff !important;
+  color: white !important;
 }
 
-.example-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+.bg-blue-600 {
+  background: linear-gradient(90deg, #00f5ff, #ff00e1) !important;
+  border: none !important;
 }
 
-/* Stars display */
-.stars-display {
-  margin: 1.5rem 0;
+.bg-gray-200 {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid #ff00e1 !important;
+  color: white !important;
 }
 
-/* Statistics display */
-.stats-display {
-  border-radius: 8px;
+.text-yellow-400 {
+  color: #00f5ff !important;
 }
 
-/* Analysis section */
-.analysis-section {
-  border-radius: 8px;
+.bg-blue-50 {
+  background: rgba(0, 0, 0, 0.6) !important;
+  border: 2px solid #00f5ff;
+}
+
+.bg-gray-100 {
+  background: rgba(0, 0, 0, 0.6) !important;
+  border: 2px solid #ff00e1;
+}
+
+.font-bold, .font-semibold {
+  color: #00f5ff;
 }
