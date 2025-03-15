@@ -1,5 +1,5 @@
 const PlayerRatingCalculator = () => {
-  const [stats, setStats] = React.usestate({
+  const [stats, setStats] = React.useState({
     playerName: '',
     position: 'PG',
     gamesPlayed: '',
@@ -13,10 +13,10 @@ const PlayerRatingCalculator = () => {
     currentRating: null
   });
   
-  const [rating, setRating] = React.usestate(null);
-  const [positionDescription, setPositionDescription] = React.usestate('');
-  const [ratingDescription, setRatingDescription] = React.usestate('');
-  const [perGameStats, setPerGameStats] = React.usestate(null);
+  const [rating, setRating] = React.useState(null);
+  const [positionDescription, setPositionDescription] = React.useState('');
+  const [ratingDescription, setRatingDescription] = React.useState('');
+  const [perGameStats, setPerGameStats] = React.useState(null);
   
   const handleInputChange = (e) => {
     const { name, value } = e.target;
