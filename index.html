@@ -41,7 +41,13 @@
       ...prevStats,
       [name]: value
     }));
-    
+
+    // Update position description when position changes
+    if (name === 'position') {
+      updatePositionDescription(value);
+    }
+  };
+  
 // Add the reset function to the component
 const handleReset = () => {
   setStats({
@@ -63,12 +69,6 @@ const handleReset = () => {
   updatePositionDescription('PG');
 };
 
-    // Update position description when position changes
-    if (name === 'position') {
-      updatePositionDescription(value);
-    }
-  };
-  
   const updatePositionDescription = (position) => {
     switch (position) {
       case 'PG':
