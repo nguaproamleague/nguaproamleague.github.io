@@ -140,7 +140,7 @@ const handleReset = () => {
     } else if (position === "SG") {
       if (pointsPerGame >= 12 && turnoversPerGame < 3) rating = 1;
     } else if (position === "SF/Lock") {
-      if (stealsPerGame >= 2 || (pointsPerGame >= 10 && stealsPerGame >= 1)) rating = 1;
+      if (stealsPerGame >= 1 || (pointsPerGame >= 10 && stealsPerGame >= 1)) rating = 1;
     } else if (position === "PF") {
       if ((reboundsPerGame >= 5 || pointsPerGame >= 10) && foulsPerGame < 3) rating = 1;
     } else if (position === "C") {
@@ -177,7 +177,7 @@ const handleReset = () => {
       if (turnoversPerGame > 2.5) rating -= 1;
       
       // Defensive impact
-      if (stealsPerGame >= 2) rating += 1;
+      if (stealsPerGame >= 1.9) rating += 1;
     }
     else if (position === "SF/Lock") {
       if (stealsPerGame >= 3) rating += 1;
@@ -350,7 +350,7 @@ const handleReset = () => {
       // SF/Lock strengths
       if (spg >= 4) strengths.push(`Elite defensive disruption (${spg.toFixed(1)} SPG).`);
       else if (spg >= 3) strengths.push(`Excellent defensive disruption (${spg.toFixed(1)} SPG).`);
-      else if (spg >= 2) strengths.push(`Good defensive presence (${spg.toFixed(1)} SPG).`);
+      else if (spg >= 1.9) strengths.push(`Good defensive presence (${spg.toFixed(1)} SPG).`);
       
       if (ppg >= 20) strengths.push(`Exceptional scoring for a lockdown defender (${ppg.toFixed(1)} PPG).`);
       else if (ppg >= 15) strengths.push(`Very good scoring for a lockdown defender (${ppg.toFixed(1)} PPG).`);
