@@ -362,7 +362,7 @@ const handleReset = () => {
       if (bpg >= 0.8) strengths.push(`Contributes shot blocking (${bpg.toFixed(1)} BPG).`);
       
       // SF/Lock weaknesses
-      if (spg < 2) weaknesses.push(`Below-average steal rate for a lockdown defender (${spg.toFixed(1)} SPG).`);
+      if (spg < 1.4) weaknesses.push(`Below-average steal rate for a lockdown defender (${spg.toFixed(1)} SPG).`);
       
       if (ppg < 8) weaknesses.push(`Limited offensive contribution (${ppg.toFixed(1)} PPG).`);
       
