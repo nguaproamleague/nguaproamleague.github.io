@@ -243,7 +243,7 @@ const handleReset = () => {
       rating = 0; // PG with more TOs than assists, or very low productivity
     } else if (position === "SG" && pointsPerGame < 8 && stealsPerGame < 1) {
       rating = 0; // SG who can't score or defend
-    } else if (position === "SF/Lock" && stealsPerGame < 1.5 && pointsPerGame < 8) {
+    } else if (position === "SF/Lock" && stealsPerGame < 1.4 && pointsPerGame < 8) {
       rating = 0; // Small Forward (Lock) with poor steals and scoring
     } else if (position === "PF" && reboundsPerGame < 3 && pointsPerGame < 8 && blocksPerGame < 0.5) {
       rating = 0; // PF with poor rebounding, scoring, and defense
