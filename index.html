@@ -14,6 +14,22 @@
     
     <script type="text/babel">
         // Define the component directly here to avoid load order issues   
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Rating Calculator</title>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        // Define the component directly here to avoid load order issues   
         const PlayerRatingCalculator = () => {
   const [stats, setStats] = React.useState({
     playerName: '',
@@ -33,6 +49,7 @@
   const [positionDescription, setPositionDescription] = React.useState('');
   const [ratingDescription, setRatingDescription] = React.useState('');
   const [perGameStats, setPerGameStats] = React.useState(null);
+  const [ratingChangeReason, setRatingChangeReason] = React.useState('');
   
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -66,6 +83,7 @@ const handleReset = () => {
   setRating(null);
   setRatingDescription('');
   setPerGameStats(null);
+  setRatingChangeReason('');
   updatePositionDescription('PG');
 };
 
@@ -134,121 +152,277 @@ const handleReset = () => {
     // Start with 0 stars as default
     let rating = 0;
     
+    // Track rating adjustments for potential explanation
+    const ratingAdjustments = [];
+    
     // Basic criteria to achieve 1 star (minimal competence for position)
     if (position === "PG") {
-      if ((pointsPerGame >= 10 || assistsPerGame >= 5) && turnoversPerGame < 4) rating = 1;
+      if ((pointsPerGame >= 10 || assistsPerGame >= 5) && turnoversPerGame < 4) {
+        rating = 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Met basic point guard criteria"});
+      }
     } else if (position === "SG") {
-      if (pointsPerGame >= 12 && turnoversPerGame < 3) rating = 1;
+      if (pointsPerGame >= 12 && turnoversPerGame < 3) {
+        rating = 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Met basic shooting guard criteria"});
+      }
     } else if (position === "SF/Lock") {
-      if (stealsPerGame >= 1 || (pointsPerGame >= 10 && stealsPerGame >= 1)) rating = 1;
+      if (stealsPerGame >= 1 || (pointsPerGame >= 10 && stealsPerGame >= 1)) {
+        rating = 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Met basic small forward criteria"});
+      }
     } else if (position === "PF") {
-      if ((reboundsPerGame >= 5 || pointsPerGame >= 10) && foulsPerGame < 3) rating = 1;
+      if ((reboundsPerGame >= 5 || pointsPerGame >= 10) && foulsPerGame < 3) {
+        rating = 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Met basic power forward criteria"});
+      }
     } else if (position === "C") {
-      if (reboundsPerGame >= 8 || (reboundsPerGame >= 5 && blocksPerGame >= 1)) rating = 1;
+      if (reboundsPerGame >= 8 || (reboundsPerGame >= 5 && blocksPerGame >= 1)) {
+        rating = 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Met basic center criteria"});
+      }
     }
     
     // Additional criteria for higher ratings
     if (position === "PG") {
-      if (pointsPerGame >= 15 && assistsPerGame >= 6) rating += 1;
-      if (pointsPerGame >= 25 && assistsPerGame >= 5) rating += 1;
+      if (pointsPerGame >= 15 && assistsPerGame >= 6) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Good scoring and playmaking (15+ PPG, 6+ APG)"});
+      }
+      if (pointsPerGame >= 25 && assistsPerGame >= 5) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Excellent scoring with good playmaking (25+ PPG, 5+ APG)"});
+      }
       
-      if (assistsPerGame >= 7) rating += 1;
-      if (assistsPerGame >= 10) rating += 1;
+      if (assistsPerGame >= 7) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Very good playmaking (7+ APG)"});
+      }
+      if (assistsPerGame >= 10) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Elite playmaking (10+ APG)"});
+      }
       
       // Efficiency adjustments
       const atoRatio = assistsPerGame / Math.max(0.5, turnoversPerGame);
-      if (atoRatio >= 3.5) rating += 1;
-      if (atoRatio <= 1.5) rating -= 1;
+      if (atoRatio >= 3.5) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Excellent assist-to-turnover ratio (3.5+)"});
+      }
+      if (atoRatio <= 1.5) {
+        rating -= 1;
+        ratingAdjustments.push({adjustment: -1, reason: "Poor assist-to-turnover ratio (below 1.5)"});
+      }
       
       // Defensive impact
-      if (stealsPerGame >= 2) rating += 1;
+      if (stealsPerGame >= 2) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Excellent defensive disruption (2+ SPG)"});
+      }
       
       // Turnover issues
-      if (turnoversPerGame > 3) rating -= 1;
-      if (turnoversPerGame > 4) rating -= 1;
+      if (turnoversPerGame > 3) {
+        rating -= 1;
+        ratingAdjustments.push({adjustment: -1, reason: "High turnover rate (over 3 TOPG)"});
+      }
+      if (turnoversPerGame > 4) {
+        rating -= 1;
+        ratingAdjustments.push({adjustment: -1, reason: "Very high turnover rate (over 4 TOPG)"});
+      }
     } 
     else if (position === "SG") {
-      if (pointsPerGame >= 15) rating += 1;
-      if (pointsPerGame >= 25) rating += 1;
-      if (pointsPerGame >= 35) rating += 1;
+      if (pointsPerGame >= 15) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Good scoring (15+ PPG)"});
+      }
+      if (pointsPerGame >= 25) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Very good scoring (25+ PPG)"});
+      }
+      if (pointsPerGame >= 35) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Elite scoring (35+ PPG)"});
+      }
       
       // Efficiency and playmaking
-      if (assistsPerGame > 3 && turnoversPerGame < 1.5) rating += 1;
-      if (turnoversPerGame > 2.5) rating -= 1;
+      if (assistsPerGame > 3 && turnoversPerGame < 1.5) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Good secondary playmaking (3+ APG with low turnovers)"});
+      }
+      if (turnoversPerGame > 2.5) {
+        rating -= 1;
+        ratingAdjustments.push({adjustment: -1, reason: "High turnover rate for a SG (over 2.5 TOPG)"});
+      }
       
       // Defensive impact
-      if (stealsPerGame >= 1.9) rating += 1;
+      if (stealsPerGame >= 1.9) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Good defensive disruption (1.9+ SPG)"});
+      }
     }
     else if (position === "SF/Lock") {
-      if (stealsPerGame >= 3) rating += 1;
-      if (stealsPerGame >= 4.5) rating += 1;
+      if (stealsPerGame >= 3) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Excellent defensive disruption (3+ SPG)"});
+      }
+      if (stealsPerGame >= 4.5) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Elite defensive disruption (4.5+ SPG)"});
+      }
       
       // Scoring contribution
-      if (pointsPerGame >= 15) rating += 1;
+      if (pointsPerGame >= 15) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Good scoring for a lockdown defender (15+ PPG)"});
+      }
       
       // Ball security
-      if (turnoversPerGame < 1 && assistsPerGame > 1.5) rating += 1;
+      if (turnoversPerGame < 1 && assistsPerGame > 1.5) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Good ball security with playmaking contribution"});
+      }
       
       // Foul discipline
-      if (foulsPerGame > 2.5) rating -= 1;
+      if (foulsPerGame > 2.5) {
+        rating -= 1;
+        ratingAdjustments.push({adjustment: -1, reason: "High foul rate (over 2.5 fouls per game)"});
+      }
     }
     else if (position === "PF") {
-      if (reboundsPerGame >= 6) rating += 1;
-      if (pointsPerGame >= 12) rating += 1;
+      if (reboundsPerGame >= 6) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Good rebounding (6+ RPG)"});
+      }
+      if (pointsPerGame >= 12) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Good scoring (12+ PPG)"});
+      }
       
       // Defensive impact
-      if (blocksPerGame >= 1 || stealsPerGame >= 2) rating += 1;
+      if (blocksPerGame >= 1 || stealsPerGame >= 2) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Good defensive impact (1+ BPG or 2+ SPG)"});
+      }
       
       // Playmaking for position
-      if (assistsPerGame >= 3 && turnoversPerGame < 2) rating += 1;
+      if (assistsPerGame >= 3 && turnoversPerGame < 2) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Good playmaking for a big man (3+ APG with low turnovers)"});
+      }
     }
     else if (position === "C") {
-      if (reboundsPerGame >= 12) rating += 1;
-      if (reboundsPerGame >= 18) rating += 1;
+      if (reboundsPerGame >= 12) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Very good rebounding (12+ RPG)"});
+      }
+      if (reboundsPerGame >= 18) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Elite rebounding (18+ RPG)"});
+      }
       
       // Playmaking for position
-      if (assistsPerGame >= 4) rating += 1;
-      if (assistsPerGame >= 7) rating += 1;
+      if (assistsPerGame >= 4) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Good playmaking for a center (4+ APG)"});
+      }
+      if (assistsPerGame >= 7) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Elite playmaking for a center (7+ APG)"});
+      }
       
       // Defensive impact
-      if (blocksPerGame >= 1) rating += 1;
+      if (blocksPerGame >= 1) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Good rim protection (1+ BPG)"});
+      }
       
       // Efficiency
       const atoRatio = assistsPerGame / Math.max(0.5, turnoversPerGame);
-      if (atoRatio >= 3.5 && assistsPerGame >= 3) rating += 1;
+      if (atoRatio >= 3.5 && assistsPerGame >= 3) {
+        rating += 1;
+        ratingAdjustments.push({adjustment: 1, reason: "Excellent passing efficiency for a center"});
+      }
     }
     
     // Game count penalty (be extremely conservative with fewer games)
     if (gamesPlayed === 1) {
+      const oldRating = rating;
       rating = Math.min(rating, 1); // Cap at 1 star for just 1 game
+      if (oldRating > rating) {
+        ratingAdjustments.push({adjustment: rating - oldRating, reason: "Limited sample size (only 1 game played)"});
+      }
     } else if (gamesPlayed <= 3) {
+      const oldRating = rating;
       rating = Math.min(rating, 2); // Cap at 2 stars for 2-3 games
+      if (oldRating > rating) {
+        ratingAdjustments.push({adjustment: rating - oldRating, reason: "Limited sample size (only 2-3 games played)"});
+      }
     } else if (gamesPlayed <= 5) {
+      const oldRating = rating;
       rating = Math.min(rating, 3); // Cap at 3 stars for 4-5 games
+      if (oldRating > rating) {
+        ratingAdjustments.push({adjustment: rating - oldRating, reason: "Limited sample size (only 4-5 games played)"});
+      }
     }
     
     // Even with 6+ games, 5 stars should be nearly impossible
     if (gamesPlayed >= 6) {
       if (position === "PG" && pointsPerGame >= 25 && assistsPerGame >= 9 && stealsPerGame >= 1.5 && turnoversPerGame < 2.5) {
+        const oldRating = rating;
         rating = 5; // Elite PG with scoring, playmaking, and defense
+        if (rating > oldRating) {
+          ratingAdjustments.push({adjustment: rating - oldRating, reason: "Elite PG performance across all categories"});
+        }
       } else if (position === "C" && reboundsPerGame >= 20 && assistsPerGame >= 8 && blocksPerGame >= 1) {
+        const oldRating = rating;
         rating = 5; // Elite C with rebounding, playmaking, and defense
+        if (rating > oldRating) {
+          ratingAdjustments.push({adjustment: rating - oldRating, reason: "Elite center performance across all categories"});
+        }
       } else {
+        const oldRating = rating;
         rating = Math.min(rating, 4); // Otherwise cap at 4 stars
+        if (oldRating > rating) {
+          ratingAdjustments.push({adjustment: rating - oldRating, reason: "Not meeting the exceptional criteria for 5 stars"});
+        }
       }
     }
     
     // Special 0-star cases - players with major deficiencies
     if (position === "PG" && (turnoversPerGame > assistsPerGame || (assistsPerGame < 3 && pointsPerGame < 8))) {
+      const oldRating = rating;
       rating = 0; // PG with more TOs than assists, or very low productivity
+      if (oldRating > rating) {
+        if (turnoversPerGame > assistsPerGame) {
+          ratingAdjustments.push({adjustment: rating - oldRating, reason: "More turnovers than assists (critical deficiency for a PG)"});
+        } else {
+          ratingAdjustments.push({adjustment: rating - oldRating, reason: "Insufficient production (under 3 APG and under 8 PPG)"});
+        }
+      }
     } else if (position === "SG" && pointsPerGame < 8 && stealsPerGame < 1) {
+      const oldRating = rating;
       rating = 0; // SG who can't score or defend
+      if (oldRating > rating) {
+        ratingAdjustments.push({adjustment: rating - oldRating, reason: "Insufficient scoring and defensive impact for a SG"});
+      }
     } else if (position === "SF/Lock" && stealsPerGame < 1.4 && pointsPerGame < 8) {
+      const oldRating = rating;
       rating = 0; // Small Forward (Lock) with poor steals and scoring
+      if (oldRating > rating) {
+        ratingAdjustments.push({adjustment: rating - oldRating, reason: "Insufficient steals and scoring for a SF/Lock"});
+      }
     } else if (position === "PF" && reboundsPerGame < 3 && pointsPerGame < 8 && blocksPerGame < 0.5) {
+      const oldRating = rating;
       rating = 0; // PF with poor rebounding, scoring, and defense
+      if (oldRating > rating) {
+        ratingAdjustments.push({adjustment: rating - oldRating, reason: "Insufficient rebounding, scoring, and defensive impact for a PF"});
+      }
     } else if (position === "C" && reboundsPerGame < 5 && blocksPerGame < 0.5) {
+      const oldRating = rating;
       rating = 0; // C with poor rebounding and rim protection
+      if (oldRating > rating) {
+        ratingAdjustments.push({adjustment: rating - oldRating, reason: "Insufficient rebounding and rim protection for a center"});
+      }
     }
     
     // Ensure rating is within bounds
@@ -256,6 +430,119 @@ const handleReset = () => {
     
     setRating(rating);
     setRatingDescription(getRatingDescription(rating));
+    
+    // Generate rating change reason
+    if (stats.currentRating !== null && stats.currentRating !== '') {
+      const currentRating = parseInt(stats.currentRating);
+      if (rating < currentRating) {
+        // Filter out positive adjustments, focus on negative ones
+        const negativeAdjustments = ratingAdjustments.filter(adj => adj.adjustment < 0);
+        if (negativeAdjustments.length > 0) {
+          setRatingChangeReason(generateRatingDropReason(negativeAdjustments, position, perGameStats));
+        } else {
+          // If no specific negative adjustments, provide a general comparison reason
+          setRatingChangeReason(generateGeneralRatingDropReason(position, {
+            pointsPerGame,
+            assistsPerGame,
+            reboundsPerGame,
+            stealsPerGame,
+            blocksPerGame,
+            turnoversPerGame,
+            foulsPerGame,
+            gamesPlayed
+          }));
+        }
+      } else {
+        setRatingChangeReason('');
+      }
+    } else {
+      setRatingChangeReason('');
+    }
+  };
+  
+  // Generate a reason for rating drop based on specific adjustments
+  const generateRatingDropReason = (negativeAdjustments, position, stats) => {
+    if (negativeAdjustments.length === 0) return '';
+    
+    let reason = "Rating dropped due to:\n";
+    
+    negativeAdjustments.forEach((adj, index) => {
+      reason += `- ${adj.reason}\n`;
+    });
+    
+    // Add position-specific advice
+    reason += "\nTo improve rating, focus on ";
+    
+    switch(position) {
+      case "PG":
+        reason += "reducing turnovers while maintaining or increasing assists. A good assist-to-turnover ratio is crucial for point guards.";
+        break;
+      case "SG":
+        reason += "increasing scoring efficiency and defensive impact through steals.";
+        break;
+      case "SF/Lock":
+        reason += "generating more steals and maintaining good scoring while avoiding fouls.";
+        break;
+      case "PF":
+        reason += "improving your rebounding and defensive presence through blocks and steals.";
+        break;
+      case "C":
+        reason += "focusing on rebounding dominance, passing efficiency, and rim protection.";
+        break;
+      default:
+        reason += "your position's key performance metrics.";
+    }
+    
+    return reason;
+  };
+  
+  // Generate a general reason for rating drop when specific negatives aren't identified
+  const generateGeneralRatingDropReason = (position, stats) => {
+    const { pointsPerGame, assistsPerGame, reboundsPerGame, stealsPerGame, blocksPerGame, turnoversPerGame, foulsPerGame, gamesPlayed } = stats;
+    
+    let reason = "Rating dropped due to not meeting key performance thresholds for your position:\n\n";
+    
+    switch(position) {
+      case "PG":
+        reason += `For a Point Guard, the key metrics are:\n`;
+        reason += `- Assists: Currently ${assistsPerGame.toFixed(1)} APG (good PGs typically have 7+)\n`;
+        reason += `- Assist-to-turnover ratio: Currently ${(assistsPerGame/Math.max(0.5, turnoversPerGame)).toFixed(1)} (should be above 2.5)\n`;
+        reason += `- Scoring: Currently ${pointsPerGame.toFixed(1)} PPG (elite PGs typically score 15+)\n`;
+        reason += `- Steals: Currently ${stealsPerGame.toFixed(1)} SPG (good defensive PGs have 1.5+)\n`;
+        break;
+      case "SG":
+        reason += `For a Shooting Guard, the key metrics are:\n`;
+        reason += `- Scoring: Currently ${pointsPerGame.toFixed(1)} PPG (SGs should typically score 15+)\n`;
+        reason += `- Steals: Currently ${stealsPerGame.toFixed(1)} SPG (good defensive SGs have 1.5+)\n`;
+        reason += `- Turnovers: Currently ${turnoversPerGame.toFixed(1)} TOPG (should be below 2.0)\n`;
+        break;
+      case "SF/Lock":
+        reason += `For a Small Forward/Lock, the key metrics are:\n`;
+        reason += `- Steals: Currently ${stealsPerGame.toFixed(1)} SPG (Locks should have 2.5+ steals)\n`;
+        reason += `- Scoring: Currently ${pointsPerGame.toFixed(1)} PPG (should contribute at least 10+ for higher ratings)\n`;
+        reason += `- Fouls: Currently ${foulsPerGame.toFixed(1)} fouls per game (should be below 2.0)\n`;
+        break;
+      case "PF":
+        reason += `For a Power Forward, the key metrics are:\n`;
+        reason += `- Rebounding: Currently ${reboundsPerGame.toFixed(1)} RPG (good PFs typically have 7+)\n`;
+        reason += `- Scoring: Currently ${pointsPerGame.toFixed(1)} PPG (should be at least 10+ for higher ratings)\n`;
+        reason += `- Defensive impact: Currently ${blocksPerGame.toFixed(1)} BPG and ${stealsPerGame.toFixed(1)} SPG (should have more combined blocks/steals)\n`;
+        break;
+      case "C":
+        reason += `For a Center, the key metrics are:\n`;
+        reason += `- Rebounding: Currently ${reboundsPerGame.toFixed(1)} RPG (good centers typically have 12+)\n`;
+        reason += `- Rim protection: Currently ${blocksPerGame.toFixed(1)} BPG (should be at least 1.0+)\n`;
+        reason += `- Playmaking: Currently ${assistsPerGame.toFixed(1)} APG (elite centers provide 4+ assists)\n`;
+        break;
+      default:
+        reason += "Overall statistical contribution doesn't match previous performance levels.";
+    }
+    
+    if (parseInt(gamesPlayed) <= 5) {
+      reason += `\n\nNote: Small sample size (${gamesPlayed} games) affects rating. With more games, the rating could increase if performance remains consistent.`;
+    }
+    
+    return reason;
   };
   
   const getRatingDescription = (rating) => {
