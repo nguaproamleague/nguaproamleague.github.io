@@ -13,7 +13,7 @@
     <div id="root"></div>
     
     <script type="text/babel">
-        // Define the component directly here to avoid load order issues
+        // Define the component directly here to avoid load order issues   
         const PlayerRatingCalculator = () => {
   const [stats, setStats] = React.useState({
     playerName: '',
@@ -42,6 +42,27 @@
       [name]: value
     }));
     
+// Add the reset function to the component
+const handleReset = () => {
+  setStats({
+    playerName: '',
+    position: 'PG',
+    gamesPlayed: '',
+    totalPoints: '',
+    totalAssists: '',
+    totalRebounds: '', 
+    totalSteals: '',
+    totalBlocks: '',
+    totalTurnovers: '',
+    totalFouls: '',
+    currentRating: null
+  });
+  setRating(null);
+  setRatingDescription('');
+  setPerGameStats(null);
+  updatePositionDescription('PG');
+};
+
     // Update position description when position changes
     if (name === 'position') {
       updatePositionDescription(value);
@@ -688,13 +709,19 @@
       </div>
       
       <div className="text-center mb-6">
-        <button
-          onClick={calculateRating}
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors"
-        >
-          Calculate Rating
-        </button>
-      </div>
+  <button
+    onClick={calculateRating}
+    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors mr-3"
+  >
+    Calculate Rating
+  </button>
+  <button
+    onClick={handleReset}
+    className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors"
+  >
+    Reset
+  </button>
+</div>
       
       <div className="mb-6">
         <h3 className="font-bold text-lg mb-2">Try Example Players:</h3>
