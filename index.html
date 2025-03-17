@@ -57,10 +57,7 @@
         setPositionDescription('Shooting guards are valued for scoring, some assists, and steals.');
         break;
       case 'SF/Lock':
-        setPositionDescription('Lockdown small forwards are valued for steals and scoring.');
-        break;
-      case 'SF':
-        setPositionDescription('Small forwards are valued for balanced contributions in scoring, rebounding, and defense.');
+        setPositionDescription('Small forwards (Lock) are valued for steals and scoring.');
         break;
       case 'PF':
         setPositionDescription('Power forwards are valued for rebounding, scoring, blocks, and steals.');
@@ -123,8 +120,6 @@
       if (pointsPerGame >= 12 && turnoversPerGame < 3) rating = 1;
     } else if (position === "SF/Lock") {
       if (stealsPerGame >= 2 || (pointsPerGame >= 10 && stealsPerGame >= 1)) rating = 1;
-    } else if (position === "SF") {
-      if ((pointsPerGame >= 8 && stealsPerGame >= 1) || reboundsPerGame >= 4) rating = 1;
     } else if (position === "PF") {
       if ((reboundsPerGame >= 5 || pointsPerGame >= 10) && foulsPerGame < 3) rating = 1;
     } else if (position === "C") {
@@ -175,18 +170,6 @@
       
       // Foul discipline
       if (foulsPerGame > 2.5) rating -= 1;
-    }
-    else if (position === "SF") {
-      if (pointsPerGame >= 12) rating += 1;
-      if (pointsPerGame >= 18) rating += 1;
-      
-      if (reboundsPerGame >= 5) rating += 1;
-      
-      // Defensive impact
-      if (stealsPerGame >= 1.5 || blocksPerGame >= 0.8) rating += 1;
-      
-      // Playmaking
-      if (assistsPerGame >= 3 && turnoversPerGame < 2) rating += 1;
     }
     else if (position === "PF") {
       if (reboundsPerGame >= 6) rating += 1;
@@ -240,9 +223,7 @@
     } else if (position === "SG" && pointsPerGame < 8 && stealsPerGame < 1) {
       rating = 0; // SG who can't score or defend
     } else if (position === "SF/Lock" && stealsPerGame < 1.5 && pointsPerGame < 8) {
-      rating = 0; // Lockdown SF with poor steals and scoring
-    } else if (position === "SF" && pointsPerGame < 7 && reboundsPerGame < 3 && stealsPerGame < 1) {
-      rating = 0; // SF with poor all-around production
+      rating = 0; // Small Forward (Lock) with poor steals and scoring
     } else if (position === "PF" && reboundsPerGame < 3 && pointsPerGame < 8 && blocksPerGame < 0.5) {
       rating = 0; // PF with poor rebounding, scoring, and defense
     } else if (position === "C" && reboundsPerGame < 5 && blocksPerGame < 0.5) {
@@ -352,7 +333,8 @@
       
       if (ppg >= 20) strengths.push(`Exceptional scoring for a lockdown defender (${ppg.toFixed(1)} PPG).`);
       else if (ppg >= 15) strengths.push(`Very good scoring for a lockdown defender (${ppg.toFixed(1)} PPG).`);
-      else if (ppg >= 10) strengths.push(`Adequate scoring contribution (${ppg.toFixed(1)} PPG).`);
+      else if (ppg >= 11) strengths.push(`Good scoring contribution (${ppg.toFixed(1)} PPG).`);
+      else if (ppg >= 8) strengths.push(`Adequate scoring contribution (${ppg.toFixed(1)} PPG).`);
       
       if (topg < 1) strengths.push(`Excellent ball security (${topg.toFixed(1)} TOPG).`);
       
@@ -364,25 +346,6 @@
       if (ppg < 8) weaknesses.push(`Limited offensive contribution (${ppg.toFixed(1)} PPG).`);
       
       if (pfpg > 2.5) weaknesses.push(`High foul rate limits playing time (${pfpg.toFixed(1)} fouls per game).`);
-      
-    } else if (position === "SF") {
-      // SF strengths
-      if (ppg >= 20) strengths.push(`Excellent scoring ability (${ppg.toFixed(1)} PPG).`);
-      else if (ppg >= 15) strengths.push(`Good scoring ability (${ppg.toFixed(1)} PPG).`);
-      
-      if (rpg >= 6) strengths.push(`Good rebounding for a wing (${rpg.toFixed(1)} RPG).`);
-      
-      if (apg >= 4) strengths.push(`Good playmaking for a forward (${apg.toFixed(1)} APG).`);
-      
-      if (spg >= 1.5) strengths.push(`Good defensive anticipation (${spg.toFixed(1)} SPG).`);
-      if (bpg >= 0.8) strengths.push(`Contributes in shot blocking (${bpg.toFixed(1)} BPG).`);
-      
-      // SF weaknesses
-      if (ppg < 10) weaknesses.push(`Limited scoring for a forward (${ppg.toFixed(1)} PPG).`);
-      
-      // Removed rebounding weakness for SF position
-      
-      if (spg < 0.8 && bpg < 0.5) weaknesses.push(`Limited defensive impact.`);
       
     } else if (position === "PF") {
       // PF strengths
@@ -558,7 +521,7 @@
     } else if (example === 'view') {
       setStats({
         playerName: 'View Accounts',
-        position: 'SF',
+        position: 'SF/Lock',
         gamesPlayed: '10',
         totalPoints: '149',
         totalAssists: '28',
@@ -567,7 +530,7 @@
         totalBlocks: '0',
         totalTurnovers: '7',
         totalFouls: '8',
-        currentRating: '5' // 5-star SF
+        currentRating: '5' // 5-star SF/Lock
       });
     }
   };
@@ -600,8 +563,7 @@
           >
             <option value="PG">Point Guard (PG)</option>
             <option value="SG">Shooting Guard (SG)</option>
-            <option value="SF">Small Forward (SF)</option>
-            <option value="SF/Lock">Lockdown SF (SF/Lock)</option>
+            <option value="SF/Lock">Small Forward (Lock)</option>
             <option value="PF">Power Forward (PF)</option>
             <option value="C">Center (C)</option>
           </select>
