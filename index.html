@@ -32,10 +32,12 @@
          const [positionDescription, setPositionDescription] = React.useState('');
          const [ratingDescription, setRatingDescription] = React.useState('');
          const [perGameStats, setPerGameStats] = React.useState(null);
+         const [pasteInput, setPasteInput] = React.useState('');
 
          // Function to handle pasting stats
         const handlePasteInput = (e) => {
     const input = e.target.value.trim();
+    setPasteInput(input); // Update the pasteInput state
     const statsArray = input.split(/\s+/).map(Number); // Split by whitespace and convert to numbers
 
     if (statsArray.length === 8) {
@@ -85,6 +87,7 @@
          setRating(null);
          setRatingDescription('');
          setPerGameStats(null);
+         setPasteInput(''); // Clear the paste input
          updatePositionDescription('PG');
          };
          
@@ -610,6 +613,7 @@
       <label className="block mb-2">Paste Player Stats</label>
       <textarea
         rows="3"
+        value={pasteInput} // Bind the value to pasteInput state
         onChange={handlePasteInput}
         className="w-full p-2 border rounded"
         placeholder="Paste stats here (e.g., 10 102 26 10 124 16 4 5)"
