@@ -573,17 +573,6 @@
          <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
          <h1 className="text-2xl font-bold mb-4 text-center">NGUA High School Player Star Rating Calculator</h1>
          <p className="mb-4 text-gray-600 text-center">Enter player's season totals to calculate their star rating</p>
-
-            {/* New Text Area for Pasting Stats */}
-            <div>
-                <label className="block mb-2">Paste Player Stats</label>
-                <textarea
-                    rows="2"
-                    onChange={handlePasteInput}
-                    className="w-full p-2 border rounded"
-                    placeholder="Paste stats here (e.g., 10 102 26 10 124 16 4 5)"
-                />
-            </div>
          
          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
          <div>
@@ -713,7 +702,18 @@
          min="0"
          />
          </div>
-         
+
+         {/* New Text Area for Pasting Stats */}
+            <div>
+                <label className="block mb-2">Paste Player Stats</label>
+                <textarea
+                    rows="2"
+                    onChange={handlePasteInput}
+                    className="w-full p-2 border rounded"
+                    placeholder="Paste stats here (e.g., 10 102 26 10 124 16 4 5)"
+                />
+            </div>
+            
          <div>
          <label className="block mb-2">Current Star Rating (if any)</label>
          <select
