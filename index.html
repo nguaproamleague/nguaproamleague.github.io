@@ -113,166 +113,203 @@
          }
          };
          
-         const calculateRating = () => {
-         const { position, gamesPlayed, totalPoints, totalAssists, totalRebounds, 
-             totalSteals, totalBlocks, totalTurnovers, totalFouls } = stats;
-         
-         // Convert inputs to numbers, treating empty strings as 0
-         const gp = parseFloat(gamesPlayed) || 0;
-         const pts = parseFloat(totalPoints) || 0;
-         const ast = parseFloat(totalAssists) || 0;
-         const reb = parseFloat(totalRebounds) || 0;
-         const stl = parseFloat(totalSteals) || 0;
-         const blk = parseFloat(totalBlocks) || 0;
-         const to = parseFloat(totalTurnovers) || 0;
-         const pf = parseFloat(totalFouls) || 0;
-         
-         // Check if GP is valid
-         if (gp <= 0) {
-         alert("Games Played must be greater than zero.");
-         return;
-         }
-         
-         // Calculate per-game averages
-         const pointsPerGame = pts / gp;
-         const assistsPerGame = ast / gp;
-         const reboundsPerGame = reb / gp;
-         const stealsPerGame = stl / gp;
-         const blocksPerGame = blk / gp;
-         const turnoversPerGame = to / gp;
-         const foulsPerGame = pf / gp;
-         
-         // Store the per-game stats for display
-         setPerGameStats({
-         pointsPerGame: pointsPerGame.toFixed(1),
-         assistsPerGame: assistsPerGame.toFixed(1),
-         reboundsPerGame: reboundsPerGame.toFixed(1),
-         stealsPerGame: stealsPerGame.toFixed(1),
-         blocksPerGame: blocksPerGame.toFixed(1),
-         turnoversPerGame: turnoversPerGame.toFixed(1),
-         foulsPerGame: foulsPerGame.toFixed(1)
-         });
-         
-         // Start with 0 stars as default
-         let rating = 0;
-         
-         // Basic criteria to achieve 1 star (minimal competence for position)
-         if (position === "PG") {
-         // Basic criteria to achieve 1 star (minimal competence for position)
-         if ((pointsPerGame >= 10 || assistsPerGame >= 5) && turnoversPerGame < 4) rating = 1;
+         // Function to calculate player rating with updated criteria
+const calculateRating = () => {
+  const { position, gamesPlayed, totalPoints, totalAssists, totalRebounds, 
+      totalSteals, totalBlocks, totalTurnovers, totalFouls } = stats;
 
-         // Adjusted criteria for higher ratings
-         if (pointsPerGame >= 17) rating += 1; // Increased scoring threshold
-         if (pointsPerGame >= 25) rating += 1; // High scoring
-         if (pointsPerGame >= 29) rating += 1; // Elite scoring
-         if (assistsPerGame >= 5) rating += 1; // Maintain assist threshold
-         if (assistsPerGame >= 7) rating += 1; // High assists
-         if (stealsPerGame >= 1.5) rating += 1; // Increased steals threshold
-         if (turnoversPerGame < 2.5) rating += 1; // Lower turnover threshold
-         if (foulsPerGame < 1) rating += 1; // Excellent foul discipline
+  // Convert inputs to numbers, treating empty strings as 0
+  const gp = parseFloat(gamesPlayed) || 0;
+  const pts = parseFloat(totalPoints) || 0;
+  const ast = parseFloat(totalAssists) || 0;
+  const reb = parseFloat(totalRebounds) || 0;
+  const stl = parseFloat(totalSteals) || 0;
+  const blk = parseFloat(totalBlocks) || 0;
+  const to = parseFloat(totalTurnovers) || 0;
+  const pf = parseFloat(totalFouls) || 0;
 
-         // Efficiency adjustments
-         const atoRatio = assistsPerGame / Math.max(0.5, turnoversPerGame);
-         if (atoRatio >= 3.5) rating += 1; // High assist-to-turnover ratio
-         if (atoRatio <= 1.5) rating -= 1; // Low assist-to-turnover ratio
+  // Check if GP is valid
+  if (gp <= 0) {
+    alert("Games Played must be greater than zero.");
+    return;
+  }
 
-         // Defensive impact
-         if (stealsPerGame >= 2) rating += 1;
+  // Calculate per-game averages
+  const pointsPerGame = pts / gp;
+  const assistsPerGame = ast / gp;
+  const reboundsPerGame = reb / gp;
+  const stealsPerGame = stl / gp;
+  const blocksPerGame = blk / gp;
+  const turnoversPerGame = to / gp;
+  const foulsPerGame = pf / gp;
 
-         // Turnover issues
-         if (turnoversPerGame > 3) rating -= 1;
-         if (turnoversPerGame > 4) rating -= 1;
-         }
-         else if (position === "SG") {
-         if (pointsPerGame >= 15) rating += 1;
-         if (pointsPerGame >= 25) rating += 1;
-         if (pointsPerGame >= 35) rating += 1;
-         
-         // Efficiency and playmaking
-         if (assistsPerGame > 3 && turnoversPerGame < 1.5) rating += 1;
-         if (turnoversPerGame > 2.5) rating -= 1;
-         
-         // Defensive impact
-         if (stealsPerGame >= 1.9) rating += 1;
-         }
-         else if (position === "SF/Lock") {
-         if (stealsPerGame >= 3) rating += 1;
-         if (stealsPerGame >= 4.5) rating += 1;
-         
-         // Scoring contribution
-         if (pointsPerGame >= 15) rating += 1;
-         
-         // Ball security
-         if (turnoversPerGame < 1 && assistsPerGame > 1.5) rating += 1;
-         
-         // Foul discipline
-         if (foulsPerGame > 2.5) rating -= 1;
-         }
-         else if (position === "PF") {
-         if (reboundsPerGame >= 6) rating += 1;
-         if (pointsPerGame >= 12) rating += 1;
-         
-         // Defensive impact
-         if (blocksPerGame >= 1 || stealsPerGame >= 2) rating += 1;
-         
-         // Playmaking for position
-         if (assistsPerGame >= 3 && turnoversPerGame < 2) rating += 1;
-         }
-         else if (position === "C") {
-         if (reboundsPerGame >= 12) rating += 1;
-         if (reboundsPerGame >= 18) rating += 1;
-         
-         // Playmaking for position
-         if (assistsPerGame >= 4) rating += 1;
-         if (assistsPerGame >= 7) rating += 1;
-         
-         // Defensive impact
-         if (blocksPerGame >= 1) rating += 1;
-         
-         // Efficiency
-         const atoRatio = assistsPerGame / Math.max(0.5, turnoversPerGame);
-         if (atoRatio >= 3.5 && assistsPerGame >= 3) rating += 1;
-         }
-         
-         // Game count penalty (be extremely conservative with fewer games)
-         if (gamesPlayed === 1) {
-         rating = Math.min(rating, 1); // Cap at 1 star for just 1 game
-         } else if (gamesPlayed <= 3) {
-         rating = Math.min(rating, 2); // Cap at 2 stars for 2-3 games
-         } else if (gamesPlayed <= 5) {
-         rating = Math.min(rating, 3); // Cap at 3 stars for 4-5 games
-         }
-         
-         // Even with 6+ games, 5 stars should be nearly impossible
-         if (gamesPlayed >= 6) {
-         if (position === "PG" && pointsPerGame >= 25 && assistsPerGame >= 9 && stealsPerGame >= 1.5 && turnoversPerGame < 2.5) {
-         rating = 5; // Elite PG with scoring, playmaking, and defense
-         } else if (position === "C" && reboundsPerGame >= 20 && assistsPerGame >= 8 && blocksPerGame >= 1) {
-         rating = 5; // Elite C with rebounding, playmaking, and defense
-         } else {
-         rating = Math.min(rating, 4); // Otherwise cap at 4 stars
-         }
-         }
-         
-         // Special 0-star cases - players with major deficiencies
-         if (position === "PG" && (turnoversPerGame > assistsPerGame || (assistsPerGame < 3 && pointsPerGame < 8))) {
-         rating = 0; // PG with more TOs than assists, or very low productivity
-         } else if (position === "SG" && pointsPerGame < 8 && stealsPerGame < 1) {
-         rating = 0; // SG who can't score or defend
-         } else if (position === "SF/Lock" && stealsPerGame < 1.4 && pointsPerGame < 8) {
-         rating = 0; // Small Forward (Lock) with poor steals and scoring
-         } else if (position === "PF" && reboundsPerGame < 3 && pointsPerGame < 8 && blocksPerGame < 0.5) {
-         rating = 0; // PF with poor rebounding, scoring, and defense
-         } else if (position === "C" && reboundsPerGame < 5 && blocksPerGame < 0.5) {
-         rating = 0; // C with poor rebounding and rim protection
-         }
-         
-         // Ensure rating is within bounds
-         rating = Math.max(0, Math.min(5, rating));
-         
-         setRating(rating);
-         setRatingDescription(getRatingDescription(rating));
-         };
+  // Store the per-game stats for display
+  setPerGameStats({
+    pointsPerGame: pointsPerGame.toFixed(1),
+    assistsPerGame: assistsPerGame.toFixed(1),
+    reboundsPerGame: reboundsPerGame.toFixed(1),
+    stealsPerGame: stealsPerGame.toFixed(1),
+    blocksPerGame: blocksPerGame.toFixed(1),
+    turnoversPerGame: turnoversPerGame.toFixed(1),
+    foulsPerGame: foulsPerGame.toFixed(1)
+  });
+
+  // Start with 0 stars as default
+  let rating = 0;
+
+  // Position-specific rating calculations
+  if (position === "PG") {
+    // Basic criteria to achieve 1 star (minimal competence for position)
+    if ((pointsPerGame >= 10 || assistsPerGame >= 5) && turnoversPerGame < 4) rating = 1;
+
+    // Adjusted criteria for higher ratings
+    if (pointsPerGame >= 17) rating += 1; // Increased scoring threshold
+    if (pointsPerGame >= 25) rating += 1; // High scoring
+    if (pointsPerGame >= 29) rating += 1; // Elite scoring
+    if (assistsPerGame >= 5) rating += 1; // Maintain assist threshold
+    if (assistsPerGame >= 7) rating += 1; // High assists
+    if (stealsPerGame >= 1.5) rating += 1; // Increased steals threshold
+    
+    // Turnover adjustments - weighing more heavily for PGs
+    if (turnoversPerGame < 2.5) rating += 1; // Good ball security
+    if (turnoversPerGame < 1.5) rating += 1; // Excellent ball security
+    if (foulsPerGame < 1) rating += 1; // Excellent foul discipline
+
+    // Efficiency adjustments
+    const atoRatio = assistsPerGame / Math.max(0.5, turnoversPerGame);
+    if (atoRatio >= 3.5) rating += 1; // High assist-to-turnover ratio
+    if (atoRatio <= 1.5 && assistsPerGame >= 3) rating -= 1; // Low assist-to-turnover ratio for a playmaker
+
+    // Defensive impact
+    if (stealsPerGame >= 2) rating += 1;
+
+    // Turnover issues - harsher penalties
+    if (turnoversPerGame > 3) rating -= 1;
+    if (turnoversPerGame > 4) rating -= 2; // Increased penalty
+  }
+  else if (position === "SG") {
+    // Scoring is primary
+    if (pointsPerGame >= 12) rating = 1; // Base competence
+    if (pointsPerGame >= 15) rating += 1;
+    if (pointsPerGame >= 20) rating += 1;
+    if (pointsPerGame >= 25) rating += 1;
+    
+    // Efficiency and playmaking
+    if (assistsPerGame > 3 && turnoversPerGame < 1.8) rating += 1;
+    if (turnoversPerGame > 2.5) rating -= 1;
+    
+    // Defensive impact
+    if (stealsPerGame >= 1.2) rating += 1;
+    if (stealsPerGame >= 1.8) rating += 1;
+  }
+  else if (position === "SF/Lock") {
+    // Base competence - steals are key
+    if (stealsPerGame >= 1.4 || (stealsPerGame >= 1.0 && pointsPerGame >= 13)) rating = 1;
+    
+    // Steals are primary
+    if (stealsPerGame >= 2.0) rating += 1;
+    if (stealsPerGame >= 3.0) rating += 1;
+    if (stealsPerGame >= 4.0) rating += 1;
+    
+    // Scoring contribution
+    if (pointsPerGame >= 12) rating += 1;
+    if (pointsPerGame >= 18) rating += 1;
+    
+    // Ball security
+    if (turnoversPerGame < 1 && stealsPerGame > 1.5) rating += 1;
+    
+    // Foul discipline - more lenient
+    if (foulsPerGame <= 2.5) rating += 1; // Changed from penalty to bonus
+    if (foulsPerGame > 3.5) rating -= 1; // Only penalize very high fouls
+  }
+  else if (position === "PF") {
+    // Base competence
+    if (reboundsPerGame >= 3 || pointsPerGame >= 10) rating = 1;
+    
+    // Rebounding
+    if (reboundsPerGame >= 5) rating += 1; // Lowered threshold
+    if (reboundsPerGame >= 7) rating += 1;
+    
+    // Scoring
+    if (pointsPerGame >= 12) rating += 1;
+    if (pointsPerGame >= 18) rating += 1;
+    
+    // Defensive impact
+    if (blocksPerGame >= 0.8 || stealsPerGame >= 1.0) rating += 1; // Either/or
+    if (blocksPerGame >= 1.5 || stealsPerGame >= 2.0) rating += 1; // Elite defense
+    
+    // Playmaking for position
+    if (assistsPerGame >= 3 && turnoversPerGame < 2) rating += 1;
+  }
+  else if (position === "C") {
+    // Base competence
+    if (reboundsPerGame >= 8 || (reboundsPerGame >= 5 && assistsPerGame >= 4)) rating = 1;
+    
+    // Rebounding is primary
+    if (reboundsPerGame >= 10) rating += 1;
+    if (reboundsPerGame >= 14) rating += 1;
+    if (reboundsPerGame >= 18) rating += 1;
+    
+    // Playmaking for position
+    if (assistsPerGame >= 3) rating += 1;
+    if (assistsPerGame >= 5) rating += 1;
+    
+    // Defensive impact
+    if (blocksPerGame >= 0.8) rating += 1;
+    if (blocksPerGame >= 1.5) rating += 1;
+    
+    // Scoring contribution
+    if (pointsPerGame >= 10) rating += 1;
+    
+    // Efficiency
+    const atoRatio = assistsPerGame / Math.max(0.5, turnoversPerGame);
+    if (atoRatio >= 3 && assistsPerGame >= 3) rating += 1;
+  }
+
+  // Game count penalty (be more lenient than before)
+  if (gamesPlayed === 1) {
+    rating = Math.min(rating, 2); // Cap at 2 star for just 1 game
+  } else if (gamesPlayed <= 3) {
+    rating = Math.min(rating, 3); // Cap at 3 stars for 2-3 games
+  } else if (gamesPlayed <= 5) {
+    rating = Math.min(rating, 4); // Cap at 4 stars for 4-5 games
+  }
+
+  // Elite performers can reach 5 stars with 6+ games
+  if (gamesPlayed >= 6) {
+    // Allow 5 stars for exceptional performers
+    if (position === "PG" && pointsPerGame >= 25 && assistsPerGame >= 8 && stealsPerGame >= 1.5 && turnoversPerGame < 2.5) {
+      rating = 5; // Elite PG with scoring, playmaking, and defense
+    } else if (position === "SG" && pointsPerGame >= 27 && stealsPerGame >= 1.8) {
+      rating = 5; // Elite SG with high scoring and good defense
+    } else if (position === "SF/Lock" && stealsPerGame >= 3.5 && pointsPerGame >= 15) {
+      rating = 5; // Elite Lock with exceptional steals and good scoring
+    } else if (position === "PF" && reboundsPerGame >= 8 && (pointsPerGame >= 18 || (blocksPerGame >= 1.5 && stealsPerGame >= 1.5))) {
+      rating = 5; // Elite PF with rebounding and either scoring or defense
+    } else if (position === "C" && reboundsPerGame >= 15 && (assistsPerGame >= 5 || blocksPerGame >= 1.5 || pointsPerGame >= 15)) {
+      rating = 5; // Elite C with excellent rebounding plus another elite skill
+    }
+  }
+
+  // Special 0-star cases - players with major deficiencies
+  if (position === "PG" && (turnoversPerGame > assistsPerGame + 1 || (assistsPerGame < 2.5 && pointsPerGame < 8))) {
+    rating = 0; // PG with far more TOs than assists, or very low productivity
+  } else if (position === "SG" && pointsPerGame < 8 && stealsPerGame < 1) {
+    rating = 0; // SG who can't score or defend
+  } else if (position === "SF/Lock" && stealsPerGame < 1 && pointsPerGame < 8) {
+    rating = 0; // Small Forward (Lock) with poor steals and scoring
+  } else if (position === "PF" && reboundsPerGame < 2 && pointsPerGame < 8 && blocksPerGame < 0.5) {
+    rating = 0; // PF with poor rebounding, scoring, and defense
+  } else if (position === "C" && reboundsPerGame < 5 && assistsPerGame < 2 && blocksPerGame < 0.5) {
+    rating = 0; // C with poor rebounding, passing and rim protection
+  }
+
+  // Ensure rating is within bounds
+  rating = Math.max(0, Math.min(5, rating));
+
+  setRating(rating);
+  setRatingDescription(getRatingDescription(rating));
+};
          
          const getRatingDescription = (rating) => {
          switch(rating) {
