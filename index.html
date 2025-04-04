@@ -207,8 +207,8 @@ const calculateRating = () => {
     if (stealsPerGame >= 1.4 || (stealsPerGame >= 1.0 && pointsPerGame >= 13)) rating = 1;
     
     // Steals are primary
-    if (stealsPerGame >= 2.0) rating += 1;
-    if (stealsPerGame >= 3.0) rating += 1;
+    if (stealsPerGame >= 1.0) rating += 1;
+    if (stealsPerGame >= 2.5) rating += 1;
     if (stealsPerGame >= 4.0) rating += 1;
     
     // Scoring contribution
