@@ -35,25 +35,25 @@
 
          // Function to handle pasting stats
         const handlePasteInput = (e) => {
-        const input = e.target.value.trim();
-        const statsArray = input.split(/\s+/).map(Number); // Split by whitespace and convert to numbers
+    const input = e.target.value.trim();
+    const statsArray = input.split(/\s+/).map(Number); // Split by whitespace and convert to numbers
 
-        if (statsArray.length === 8) {
-            setStats(prevStats => ({
-                ...prevStats,
-                gamesPlayed: statsArray[0],
-                totalPoints: statsArray[1],
-                totalAssists: statsArray[2],
-                totalRebounds: statsArray[3],
-                totalSteals: statsArray[4],
-                totalBlocks: statsArray[5],
-                totalTurnovers: statsArray[6],
-                totalFouls: statsArray[7],
-            }));
-        } else {
-            alert("Please enter exactly 8 numbers.");
-        }
-    };
+    if (statsArray.length === 8) {
+        setStats(prevStats => ({
+            ...prevStats,
+            gamesPlayed: statsArray[0],      // GP
+            totalPoints: statsArray[1],       // PTS
+            totalAssists: statsArray[2],      // AST
+            totalFouls: statsArray[3],        // PF
+            totalRebounds: statsArray[4],     // REB
+            totalTurnovers: statsArray[5],    // TO
+            totalSteals: statsArray[6],       // STL
+            totalBlocks: statsArray[7],       // BLK
+        }));
+    } else {
+        alert("Please enter exactly 8 numbers.");
+    }
+};
          
          const handleInputChange = (e) => {
          const { name, value } = e.target;
