@@ -570,258 +570,259 @@
          };
          
          return (
-         <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-         <h1 className="text-2xl font-bold mb-4 text-center">NGUA High School Player Star Rating Calculator</h1>
-         <p className="mb-4 text-gray-600 text-center">Enter player's season totals to calculate their star rating</p>
-         
-         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-         <div>
-           <label className="block mb-2">Player Name</label>
-           <input
-             type="text"
-             name="playerName"
-             value={stats.playerName}
-             onChange={handleInputChange}
-             className="w-full p-2 border rounded"
-             placeholder="Player Name"
-           />
-         </div>
-         
-         <div>
-           <label className="block mb-2">Position</label>
-           <select
-             name="position"
-             value={stats.position}
-             onChange={handleInputChange}
-             className="w-full p-2 border rounded"
-           >
-             <option value="PG">Point Guard (PG)</option>
-             <option value="SG">Shooting Guard (SG)</option>
-             <option value="SF/Lock">Small Forward (Lock)</option>
-             <option value="PF">Power Forward (PF)</option>
-             <option value="C">Center (C)</option>
-           </select>
-           <p className="text-sm text-gray-500 mt-1">{positionDescription}</p>
-         </div>
-         </div>
-         
-         {/* Replace the input fields grid div (starting around line 371) with this: */}
-         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-         <div>
-         <label className="block mb-2">Games Played (GP)</label>
-         <input
-         type="number"
-         name="gamesPlayed"
-         value={stats.gamesPlayed}
-         onChange={handleInputChange}
-         className="w-full p-2 border rounded"
-         min="1"
-         />
-         </div>
-         
-         <div>
-         <label className="block mb-2">Total Points (PTS)</label>
-         <input
-         type="number"
-         name="totalPoints"
-         value={stats.totalPoints}
-         onChange={handleInputChange}
-         className="w-full p-2 border rounded"
-         min="0"
-         />
-         </div>
-         
-         <div>
-         <label className="block mb-2">Total Assists (AST)</label>
-         <input
-         type="number"
-         name="totalAssists"
-         value={stats.totalAssists}
-         onChange={handleInputChange}
-         className="w-full p-2 border rounded"
-         min="0"
-         />
-         </div>
-         
-         <div>
-         <label className="block mb-2">Total Personal Fouls (PF)</label>
-         <input
-         type="number"
-         name="totalFouls"
-         value={stats.totalFouls}
-         onChange={handleInputChange}
-         className="w-full p-2 border rounded"
-         min="0"
-         />
-         </div>
-         
-         <div>
-         <label className="block mb-2">Total Rebounds (REB)</label>
-         <input
-         type="number"
-         name="totalRebounds"
-         value={stats.totalRebounds}
-         onChange={handleInputChange}
-         className="w-full p-2 border rounded"
-         min="0"
-         />
-         </div>
-         
-         <div>
-         <label className="block mb-2">Total Turnovers (TO)</label>
-         <input
-         type="number"
-         name="totalTurnovers"
-         value={stats.totalTurnovers}
-         onChange={handleInputChange}
-         className="w-full p-2 border rounded"
-         min="0"
-         />
-         </div>
-         
-         <div>
-         <label className="block mb-2">Total Steals (STL)</label>
-         <input
-         type="number"
-         name="totalSteals"
-         value={stats.totalSteals}
-         onChange={handleInputChange}
-         className="w-full p-2 border rounded"
-         min="0"
-         />
-         </div>
-         
-         <div>
-         <label className="block mb-2">Total Blocks (BLK)</label>
-         <input
-         type="number"
-         name="totalBlocks"
-         value={stats.totalBlocks}
-         onChange={handleInputChange}
-         className="w-full p-2 border rounded"
-         min="0"
-         />
-         </div>
-
-         {/* New Text Area for Pasting Stats */}
-          <div className="mb-6">
-    <label className="block mb-2">Paste Player Stats</label>
-    <textarea
-        rows="4"  // Increased rows for more height
+  <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <h1 className="text-2xl font-bold mb-4 text-center">NGUA High School Player Star Rating Calculator</h1>
+    <p className="mb-4 text-gray-600 text-center">Enter player's season totals to calculate their star rating</p>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div>
+        <label className="block mb-2">Player Name</label>
+        <input
+          type="text"
+          name="playerName"
+          value={stats.playerName}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded"
+          placeholder="Player Name"
+        />
+      </div>
+      
+      <div>
+        <label className="block mb-2">Position</label>
+        <select
+          name="position"
+          value={stats.position}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded"
+        >
+          <option value="PG">Point Guard (PG)</option>
+          <option value="SG">Shooting Guard (SG)</option>
+          <option value="SF/Lock">Small Forward (Lock)</option>
+          <option value="PF">Power Forward (PF)</option>
+          <option value="C">Center (C)</option>
+        </select>
+        <p className="text-sm text-gray-500 mt-1">{positionDescription}</p>
+      </div>
+    </div>
+    
+    {/* New Text Area for Pasting Stats - now spans full width */}
+    <div className="w-full mb-4">
+      <label className="block mb-2">Paste Player Stats</label>
+      <textarea
+        rows="3"
         onChange={handlePasteInput}
-        className="w-full p-2 border rounded mb-4"  // Full width and margin-bottom
+        className="w-full p-2 border rounded"
         placeholder="Paste stats here (e.g., 10 102 26 10 124 16 4 5)"
-    />
-</div>
-            
-         <div>
-         <label className="block mb-2">Current Star Rating (if any)</label>
-         <select
-         name="currentRating"
-         value={stats.currentRating !== null ? stats.currentRating : ''}
-         onChange={handleInputChange}
-         className="w-full p-2 border rounded"
-         >
-         <option value="">-- Select Rating --</option>
-         <option value="0">0 Stars</option>
-         <option value="1">1 Star</option>
-         <option value="2">2 Stars</option>
-         <option value="3">3 Stars</option>
-         <option value="4">4 Stars</option>
-         <option value="5">5 Stars</option>
-         </select>
-         </div>
-         </div>
-         
-         <div className="text-center mb-6">
-         <button
-         onClick={calculateRating}
-         className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors mr-3"
-         >
-         Calculate Rating
-         </button>
-         <button
-         onClick={handleReset}
-         className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors"
-         >
-         Reset
-         </button>
-         </div>
-         
-         <div className="mb-6">
-         <h3 className="font-bold text-lg mb-2">Try Example Players:</h3>
-         <div className="flex flex-wrap gap-2">
-           <button 
-             onClick={() => handleExampleClick('blick')}
-             className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
-           >
-             Blick Star (PG)
-           </button>
-           <button 
-             onClick={() => handleExampleClick('mhad')}
-             className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
-           >
-             TV, Mhad (C)
-           </button>
-           <button 
-             onClick={() => handleExampleClick('view')}
-             className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
-           >
-             View Accounts (SF)
-           </button>
-         </div>
-         </div>
-         
-         {renderStars()}
-         
-         {perGameStats !== null && (
-         <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-           <h3 className="font-bold text-lg mb-2">Per-Game Averages</h3>
-           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-             <div>
-               <span className="font-semibold">Points:</span> {perGameStats.pointsPerGame}
-             </div>
-             <div>
-               <span className="font-semibold">Assists:</span> {perGameStats.assistsPerGame}
-             </div>
-             <div>
-               <span className="font-semibold">Rebounds:</span> {perGameStats.reboundsPerGame}
-             </div>
-             <div>
-               <span className="font-semibold">Steals:</span> {perGameStats.stealsPerGame}
-             </div>
-             <div>
-               <span className="font-semibold">Blocks:</span> {perGameStats.blocksPerGame}
-             </div>
-             <div>
-               <span className="font-semibold">Turnovers:</span> {perGameStats.turnoversPerGame}
-             </div>
-             <div>
-               <span className="font-semibold">Fouls:</span> {perGameStats.foulsPerGame}
-             </div>
-           </div>
-         </div>
-         )}
-         
-         {rating !== null && (
-         <div className="mt-6 p-4 bg-gray-100 rounded-lg">
-           <h3 className="font-bold text-lg mb-2">Player Analysis</h3>
-           <div dangerouslySetInnerHTML={{ __html: generatePlayerAnalysis() }} />
-           
-           <h3 className="font-bold text-lg mt-4 mb-2">Rating Explanation</h3>
-           <p>Ratings are based on:</p>
-           <ul className="list-disc pl-6 mt-2">
-             <li>Position-specific performance expectations</li>
-             <li>Statistical production relative to position</li>
-             <li>Efficiency metrics (like assist-to-turnover ratio)</li>
-             <li>Games played (fewer games = more conservative rating)</li>
-             <li>Balance of offensive and defensive contributions</li>
-           </ul>
-           <p className="mt-2">The algorithm uses the same criteria developed through our previous analysis of over 100 players.</p>
-         </div>
-         )}
-         </div>
-         );
+      />
+      <p className="text-xs text-gray-500 mt-1">Format: GP PTS AST PF REB TO STL BLK</p>
+    </div>
+    
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div>
+        <label className="block mb-2">Games Played (GP)</label>
+        <input
+          type="number"
+          name="gamesPlayed"
+          value={stats.gamesPlayed}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded"
+          min="1"
+        />
+      </div>
+      
+      <div>
+        <label className="block mb-2">Total Points (PTS)</label>
+        <input
+          type="number"
+          name="totalPoints"
+          value={stats.totalPoints}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded"
+          min="0"
+        />
+      </div>
+      
+      <div>
+        <label className="block mb-2">Total Assists (AST)</label>
+        <input
+          type="number"
+          name="totalAssists"
+          value={stats.totalAssists}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded"
+          min="0"
+        />
+      </div>
+      
+      <div>
+        <label className="block mb-2">Total Personal Fouls (PF)</label>
+        <input
+          type="number"
+          name="totalFouls"
+          value={stats.totalFouls}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded"
+          min="0"
+        />
+      </div>
+      
+      <div>
+        <label className="block mb-2">Total Rebounds (REB)</label>
+        <input
+          type="number"
+          name="totalRebounds"
+          value={stats.totalRebounds}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded"
+          min="0"
+        />
+      </div>
+      
+      <div>
+        <label className="block mb-2">Total Turnovers (TO)</label>
+        <input
+          type="number"
+          name="totalTurnovers"
+          value={stats.totalTurnovers}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded"
+          min="0"
+        />
+      </div>
+      
+      <div>
+        <label className="block mb-2">Total Steals (STL)</label>
+        <input
+          type="number"
+          name="totalSteals"
+          value={stats.totalSteals}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded"
+          min="0"
+        />
+      </div>
+      
+      <div>
+        <label className="block mb-2">Total Blocks (BLK)</label>
+        <input
+          type="number"
+          name="totalBlocks"
+          value={stats.totalBlocks}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded"
+          min="0"
+        />
+      </div>
+    </div>
+    
+    {/* Current Star Rating moved below the paste input */}
+    <div className="w-full mb-6">
+      <label className="block mb-2">Current Star Rating (if any)</label>
+      <select
+        name="currentRating"
+        value={stats.currentRating !== null ? stats.currentRating : ''}
+        onChange={handleInputChange}
+        className="w-full p-2 border rounded"
+      >
+        <option value="">-- Select Rating --</option>
+        <option value="0">0 Stars</option>
+        <option value="1">1 Star</option>
+        <option value="2">2 Stars</option>
+        <option value="3">3 Stars</option>
+        <option value="4">4 Stars</option>
+        <option value="5">5 Stars</option>
+      </select>
+    </div>
+    
+    <div className="text-center mb-6">
+      <button
+        onClick={calculateRating}
+        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors mr-3"
+      >
+        Calculate Rating
+      </button>
+      <button
+        onClick={handleReset}
+        className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors"
+      >
+        Reset
+      </button>
+    </div>
+    
+    <div className="mb-6">
+      <h3 className="font-bold text-lg mb-2">Try Example Players:</h3>
+      <div className="flex flex-wrap gap-2">
+        <button 
+          onClick={() => handleExampleClick('blick')}
+          className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
+        >
+          Blick Star (PG)
+        </button>
+        <button 
+          onClick={() => handleExampleClick('mhad')}
+          className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
+        >
+          TV, Mhad (C)
+        </button>
+        <button 
+          onClick={() => handleExampleClick('view')}
+          className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
+        >
+          View Accounts (SF)
+        </button>
+      </div>
+    </div>
+    
+    {renderStars()}
+    
+    {perGameStats !== null && (
+      <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+        <h3 className="font-bold text-lg mb-2">Per-Game Averages</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div>
+            <span className="font-semibold">Points:</span> {perGameStats.pointsPerGame}
+          </div>
+          <div>
+            <span className="font-semibold">Assists:</span> {perGameStats.assistsPerGame}
+          </div>
+          <div>
+            <span className="font-semibold">Rebounds:</span> {perGameStats.reboundsPerGame}
+          </div>
+          <div>
+            <span className="font-semibold">Steals:</span> {perGameStats.stealsPerGame}
+          </div>
+          <div>
+            <span className="font-semibold">Blocks:</span> {perGameStats.blocksPerGame}
+          </div>
+          <div>
+            <span className="font-semibold">Turnovers:</span> {perGameStats.turnoversPerGame}
+          </div>
+          <div>
+            <span className="font-semibold">Fouls:</span> {perGameStats.foulsPerGame}
+          </div>
+        </div>
+      </div>
+    )}
+    
+    {rating !== null && (
+      <div className="mt-6 p-4 bg-gray-100 rounded-lg">
+        <h3 className="font-bold text-lg mb-2">Player Analysis</h3>
+        <div dangerouslySetInnerHTML={{ __html: generatePlayerAnalysis() }} />
+        
+        <h3 className="font-bold text-lg mt-4 mb-2">Rating Explanation</h3>
+        <p>Ratings are based on:</p>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Position-specific performance expectations</li>
+          <li>Statistical production relative to position</li>
+          <li>Efficiency metrics (like assist-to-turnover ratio)</li>
+          <li>Games played (fewer games = more conservative rating)</li>
+          <li>Balance of offensive and defensive contributions</li>
+        </ul>
+        <p className="mt-2">The algorithm uses the same criteria developed through our previous analysis of over 100 players.</p>
+      </div>
+    )}
+  </div>
+);
          };
          
          window.PlayerRatingCalculator = PlayerRatingCalculator;
