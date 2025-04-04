@@ -716,23 +716,23 @@
     </div>
     
     {/* Current Star Rating moved below the paste input */}
-    <div className="w-full mb-6">
-      <label className="block mb-2">Current Star Rating (if any)</label>
-      <select
-        name="currentRating"
-        value={stats.currentRating !== null ? stats.currentRating : ''}
-        onChange={handleInputChange}
-        className="w-full p-2 border rounded"
-      >
-        <option value="">-- Select Rating --</option>
-        <option value="0">0 Stars</option>
-        <option value="1">1 Star</option>
-        <option value="2">2 Stars</option>
-        <option value="3">3 Stars</option>
-        <option value="4">4 Stars</option>
-        <option value="5">5 Stars</option>
-      </select>
-    </div>
+    <div className="mb-6">
+  <label className="block mb-2">Current Star Rating (if any)</label>
+  <select
+    name="currentRating"
+    value={stats.currentRating !== null ? stats.currentRating : ''}
+    onChange={handleInputChange}
+    className="p-2 border rounded" // Removed w-full
+  >
+    <option value="">-- Select Rating --</option>
+    <option value="0">0 Stars</option>
+    <option value="1">1 Star</option>
+    <option value="2">2 Stars</option>
+    <option value="3">3 Stars</option>
+    <option value="4">4 Stars</option>
+    <option value="5">5 Stars</option>
+  </select>
+</div>
     
     <div className="text-center mb-6">
       <button
